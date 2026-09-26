@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <title>Happy Birthday Gaytri ❤️</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Comic Sans MS', 'Chalkboard SE', 'Segoe UI', cursive, sans-serif;
+      user-select: none;
+    }
+
+    body {
+      background-color: #e50914;
+      color: #ffffff;
+      height: 100vh;
+      width: 100vw;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .screen {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+      padding: 20px;
+    }
+
+    .screen.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .btn-next, .btn-back {
+      background-color: #ffffff;
+      color: #e50914;
+      border: 2px solid #ffffff;
+      padding: 8px 22px;
+      font-size: 16px;
+      font-weight: bold;
+      border-radius: 20px;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+
+    .btn-next:active, .btn-back:active {
+      transform: scale(0.95);
+    }
+
+    .btn-back {
+      position: absolute;
+      bottom: 25px;
+      right: 25px;
+    }
+
+    /* PASSCODE SCREEN */
+    .passcode-container {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      gap: 30px;
+      max-width: 900px;
+      width: 100%;
+    }
+
+    .polaroid-frame {
+      background: #ffffff;
+      padding: 10px 10px 30px 10px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+      transform: rotate(-4deg);
+      border-radius: 4px;
+      position: relative;
+    }
+
+    .polaroid-frame img {
+      width: 200px;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 2px;
+    }
+
+    .polaroid-frame .flower-sticker {
+      position: absolute;
+      top: -15px;
+      left: -15px;
+      font-size: 35px;
+    }
+
+    .polaroid-frame .caption {
+      color: #333;
+      text-align: center;
+      font-size: 14px;
+      margin-top: 8px;
+      font-family: cursive;
+    }
+
+    .keypad-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .keypad-section h2 {
+      font-size: 22px;
+      margin-bottom: 15px;
+      font-weight: normal;
+    }
+
+    .pin-dots {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .dot {
+      width: 16px;
+      height: 16px;
+      border: 2px solid white;
+      border-radius: 50%;
+    }
+
+    .dot.filled {
+      background-color: white;
+    }
+
+    .keypad {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .key {
+      width: 52px;
+      height: 52px;
+      background: white;
+      color: #e50914;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+
+    .key:active {
+      background: #ffd1d1;
+    }
+
+    /* GREETING SCREEN */
+    .greeting-title {
+      font-size: 36px;
+      margin-bottom: 20px;
+      letter-spacing: 2px;
+    }
+
+    .sticker-group {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 30px;
+    }
+
+    /* GIFTS SCREEN */
+    .gifts-title {
+      font-size: 36px;
+      margin-bottom: 8px;
+    }
+
+    .gifts-subtitle {
+      font-size: 16px;
+      margin-bottom: 35px;
+      opacity: 0.9;
+    }
+
+    .gifts-grid {
+      display: flex;
+      gap: 25px;
+    }
+
+    .gift-box-item {
+      font-size: 80px;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+      filter: drop-shadow(0 8px 15px rgba(0,0,0,0.3));
+    }
+
+    .gift-box-item:hover {
+      transform: scale(1.15);
+    }
+
+    /* CAKE SCREEN */
+    .cake-title {
+      font-size: 36px;
+      margin-bottom: 25px;
+    }
+
+    .candles-row {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: -10px;
+    }
+
+    .candle-item {
+      width: 10px;
+      height: 40px;
+      background: repeating-linear-gradient(0deg, #fff, #fff 6px, #ff4081 6px, #ff4081 12px);
+      border-radius: 3px;
+      position: relative;
+    }
+
+    .flame-item {
+      position: absolute;
+      top: -18px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 12px;
+      height: 18px;
+      background: radial-gradient(ellipse at bottom, #ffd700, #ff5722);
+      border-radius: 50% 50% 20% 20%;
+      box-shadow: 0 0 10px #ffd700;
+      animation: flameFlicker 0.6s infinite alternate;
+    }
+
+    .flame-item.off {
+      display: none;
+    }
+
+    @keyframes flameFlicker {
+      0% { transform: translateX(-50%) scale(1); }
+      100% { transform: translateX(-50%) scale(1.15); }
+    }
+
+    .cake-svg {
+      width: 200px;
+      height: 180px;
+    }
+
+    /* PHOTO COLLAGE */
+    .collage-grid {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .polaroid-card {
+      background: white;
+      padding: 8px 8px 20px 8px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+      border-radius: 4px;
+    }
+
+    .polaroid-card img {
+      width: 140px;
+      height: 180px;
+      object-fit: cover;
+    }
+
+    /* LETTER CONTAINER */
+    .letter-container {
+      display: flex;
+      gap: 25px;
+      align-items: center;
+      max-width: 800px;
+    }
+
+    .envelope-card {
+      background: #ffffff;
+      color: #333;
+      padding: 22px;
+      border-radius: 12px;
+      width: 320px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+      position: relative;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .envelope-card::before {
+      content: '💌';
+      position: absolute;
+      top: -20px;
+      right: -10px;
+      font-size: 35px;
+    }
+
+    @media (max-width: 768px) {
+      .passcode-container, .collage-grid, .letter-container {
+        flex-direction: column;
+        gap: 15px;
+      }
+      .polaroid-card img {
+        width: 120px;
+        height: 150px;
+      }
+      .envelope-card {
+        width: 280px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 1. PASSCODE SCREEN -->
+  <div class="screen active" id="screen-passcode">
+    <div class="passcode-container">
+      <div class="polaroid-frame">
+        <span class="flower-sticker">🌺</span>
+        <img src="gh3.jpeg" alt="Gaytri Cute Childhood Photo" />
+        <div class="caption">For Gaytri ❤️</div>
+      </div>
+
+      <div class="keypad-section">
+        <h2>Enter a passcode</h2>
+        <div class="pin-dots">
+          <div class="dot" id="dot1"></div>
+          <div class="dot" id="dot2"></div>
+          <div class="dot" id="dot3"></div>
+          <div class="dot" id="dot4"></div>
+        </div>
+        <div class="keypad">
+          <div class="key" onclick="pressKey('1')">1</div>
+          <div class="key" onclick="pressKey('2')">2</div>
+          <div class="key" onclick="pressKey('3')">3</div>
+          <div class="key" onclick="pressKey('4')">4</div>
+          <div class="key" onclick="pressKey('5')">5</div>
+          <div class="key" onclick="pressKey('6')">6</div>
+          <div class="key" onclick="pressKey('7')">7</div>
+          <div class="key" onclick="pressKey('8')">8</div>
+          <div class="key" onclick="pressKey('9')">9</div>
+          <div></div>
+          <div class="key" onclick="pressKey('0')">0</div>
+          <div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. GREETING SCREEN -->
+  <div class="screen" id="screen-greeting">
+    <div style="text-align: center;">
+      <h1 class="greeting-title">HAPPY BIRTHDAY</h1>
+      <div class="sticker-group">
+        <span style="font-size: 70px;">🐱</span>
+        <span style="font-size: 80px;">🐻</span>
+        <span style="font-size: 70px;">🐰</span>
+      </div>
+      <button class="btn-next" onclick="goToScreen('screen-gifts')">NEXT</button>
+    </div>
+  </div>
+
+  <!-- 3. GIFTS SELECTION -->
+  <div class="screen" id="screen-gifts">
+    <h1 class="gifts-title">GIFT FOR YOU</h1>
+    <p class="gifts-subtitle">Click any gift to open</p>
+    <div class="gifts-grid">
+      <div class="gift-box-item" onclick="openGift('cake')">🎁</div>
+      <div class="gift-box-item" onclick="openGift('photos')">🎁</div>
+      <div class="gift-box-item" onclick="openGift('letter')">🎁</div>
+    </div>
+  </div>
+
+  <!-- GIFT 1: CAKE -->
+  <div class="screen" id="gift-cake">
+    <div style="text-align: center;">
+      <h1 class="cake-title" id="cake-heading">make a wish</h1>
+      
+      <div class="candles-row">
+        <div class="candle-item"><div class="flame-item"></div></div>
+        <div class="candle-item"><div class="flame-item"></div></div>
+        <div class="candle-item"><div class="flame-item"></div></div>
+        <div class="candle-item"><div class="flame-item"></div></div>
+        <div class="candle-item"><div class="flame-item"></div></div>
+      </div>
+
+      <svg class="cake-svg" viewBox="0 0 200 160">
+        <path d="M 20 80 Q 100 60 180 80 L 180 140 Q 100 160 20 140 Z" fill="#81d4fa" />
+        <path d="M 20 80 Q 100 100 180 80 L 180 60 Q 100 40 20 60 Z" fill="#b3e5fc" />
+        <path d="M 20 60 Q 30 75 40 60 Q 50 75 60 60 Q 70 75 80 60 Q 90 75 100 60 Q 110 75 120 60 Q 130 75 140 60 Q 150 75 160 60 Q 170 75 180 60" fill="none" stroke="#ffffff" stroke-width="6" />
+      </svg>
+      <br />
+      <button class="btn-next" style="margin-top:20px;" onclick="blowCandles()">blow</button>
+    </div>
+    <button class="btn-back" onclick="goToScreen('screen-gifts')">back</button>
+  </div>
+
+  <!-- GIFT 2: 3 PHOTOS COLLAGE -->
+  <div class="screen" id="gift-photos">
+    <h1 style="margin-bottom: 20px; font-size: 28px;">Happy Birthday Gaytri ❤️</h1>
+    <div class="collage-grid">
+      <div class="polaroid-card" style="transform: rotate(-4deg);">
+        <img src="gh3.jpeg" alt="Gaytri Cute Childhood" />
+      </div>
+      <div class="polaroid-card" style="transform: rotate(2deg);">
+        <img src="gk.jpeg" alt="Gaytri Traditional Cute" />
+      </div>
+      <div class="polaroid-card" style="transform: rotate(-3deg);">
+        <img src="gk2.jpeg" alt="Gaytri Recent Photo" />
+      </div>
+    </div>
+    <button class="btn-back" onclick="goToScreen('screen-gifts')">back</button>
+  </div>
+
+  <!-- GIFT 3: SPECIAL LETTER -->
+  <div class="screen" id="gift-letter">
+    <div class="letter-container">
+      <div class="polaroid-card" style="transform: rotate(-4deg);">
+        <img src="gk2.jpeg" alt="Gaytri Recent" />
+      </div>
+
+      <div class="envelope-card">
+        <p>Happy birthday to my favourite person! ❤️</p>
+        <p style="margin-top: 10px;">You are so kind, so sweet, and always there for me, even during the hardest times.</p>
+        <p style="margin-top: 10px;">You’ve been a part of my last 7 minutes of memory… and I hope you’ll be a part of many, many more. ♥️✨</p>
+      </div>
+    </div>
+    <button class="btn-back" onclick="goToScreen('screen-gifts')">back</button>
+  </div>
+
+  <script>
+    function goToScreen(screenId) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.getElementById(screenId).classList.add('active');
+    }
+
+    let currentPin = '';
+    const correctPin = '0110';
+
+    function pressKey(num) {
+      if (currentPin.length < 4) {
+        currentPin += num;
+        updateDots();
+        
+        if (currentPin.length === 4) {
+          setTimeout(() => {
+            if (currentPin === correctPin) {
+              goToScreen('screen-greeting');
+            } else {
+              alert('Wrong Passcode! Try 0110');
+            }
+            currentPin = '';
+            updateDots();
+          }, 200);
+        }
+      }
+    }
+
+    function updateDots() {
+      for (let i = 1; i <= 4; i++) {
+        const dot = document.getElementById(`dot${i}`);
+        if (i <= currentPin.length) {
+          dot.classList.add('filled');
+        } else {
+          dot.classList.remove('filled');
+        }
+      }
+    }
+
+    function openGift(type) {
+      if (type === 'cake') goToScreen('gift-cake');
+      if (type === 'photos') goToScreen('gift-photos');
+      if (type === 'letter') goToScreen('gift-letter');
+    }
+
+    function blowCandles() {
+      document.querySelectorAll('.flame-item').forEach(f => f.classList.add('off'));
+      document.getElementById('cake-heading').innerText = 'happy birthday';
+    }
+  </script>
+</body>
+</html>
